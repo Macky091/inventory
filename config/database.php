@@ -5,7 +5,7 @@
  */
 
 define('DB_HOST', getenv('MYSQLHOST')     ?: 'zephyr.proxy.rlwy.net');
-define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
+define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 28764));
 define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
 define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'AmAVIGyPIvtAgYNISmJZGYAynrhTngaL');
 define('DB_NAME', getenv('MYSQLDATABASE') ?: 'inventory_db');
