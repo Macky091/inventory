@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       Smart <span>Inventory</span>,<br>Smarter Business
     </div>
     <p class="brand-sub">
-      Track stock, manage products, and gain insights with ease. Your inventory, simplified.
+      Track stock as per branch, manage products, and gain insights with ease. Your inventory, simplified.
     </p>
   </div>
 
