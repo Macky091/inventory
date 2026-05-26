@@ -16,7 +16,7 @@ $userInitials  = strtoupper(substr($_SESSION['user_full_name'] ?? 'U', 0, 2));
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><?= sanitize($pageTitle) ?> — InvenTrack</title>
+  <title><?= sanitize($pageTitle) ?> — Brancher</title>
   <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css" />
   <!-- Font Awesome for icons -->
   <link rel="stylesheet"
@@ -39,7 +39,7 @@ $userInitials  = strtoupper(substr($_SESSION['user_full_name'] ?? 'U', 0, 2));
 
     <div class="sidebar-header">
       <div class="sidebar-logo-icon">📦</div>
-      <span class="sidebar-logo-text">InvenTrack</span>
+      <span class="sidebar-logo-text">Brancher</span>
     </div>
 
     <nav class="sidebar-nav">
