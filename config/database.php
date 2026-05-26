@@ -1,22 +1,17 @@
 <?php
 /**
  * Database Configuration
- * Inventory Management System
+ * Reads credentials from Railway environment variables.
  */
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'inventory_db');
+define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost');
+define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
+define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'inventory_db');
 
-/**
- * Creates and returns a MySQLi database connection.
- * Terminates with an error message if the connection fails.
- *
- * @return mysqli
- */
 function getDBConnection(): mysqli {
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 
     if ($conn->connect_error) {
         die(json_encode([
