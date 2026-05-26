@@ -14,7 +14,7 @@ require_once __DIR__ . '/../config/database.php';
  * @param int    $categoryId  Filter by category (0 = all)
  * @return array
  */
-function getAllProducts(string $search = '', int $categoryId = 0): array {
+function getAllProducts(string $search = '', int $categoryId = 0, ?int $userId = null): array {
     $conn = getDBConnection();
 
     $sql = '
@@ -42,6 +42,12 @@ function getAllProducts(string $search = '', int $categoryId = 0): array {
     if ($categoryId > 0) {
         $sql     .= ' AND p.category_id = ?';
         $params[] = $categoryId;
+        $types   .= 'i';
+    }
+
+    if ($userId !== null) {
+        $sql     .= ' AND p.created_by = ?';
+        $params[] = $userId;
         $types   .= 'i';
     }
 
@@ -247,10 +253,21 @@ function getAllCategories(): array {
  *
  * @return int
  */
-function getTotalProducts(): int {
-    $conn   = getDBConnection();
-    $result = $conn->query('SELECT COUNT(*) AS total FROM products');
+function getTotalProducts(?int $userId = null): int {
+    $conn = getDBConnection();
+    if ($userId === null) {
+        $result = $conn->query('SELECT COUNT(*) AS total FROM products');
+        $row    = $result->fetch_assoc();
+        $conn->close();
+        return (int) $row['total'];
+    }
+
+    $stmt = $conn->prepare('SELECT COUNT(*) AS total FROM products WHERE created_by = ?');
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $row    = $result->fetch_assoc();
+    $stmt->close();
     $conn->close();
     return (int) $row['total'];
 }
@@ -260,10 +277,21 @@ function getTotalProducts(): int {
  *
  * @return float
  */
-function getTotalInventoryValue(): float {
-    $conn   = getDBConnection();
-    $result = $conn->query('SELECT COALESCE(SUM(quantity * unit_price), 0) AS total FROM products');
+function getTotalInventoryValue(?int $userId = null): float {
+    $conn = getDBConnection();
+    if ($userId === null) {
+        $result = $conn->query('SELECT COALESCE(SUM(quantity * unit_price), 0) AS total FROM products');
+        $row    = $result->fetch_assoc();
+        $conn->close();
+        return (float) $row['total'];
+    }
+
+    $stmt = $conn->prepare('SELECT COALESCE(SUM(quantity * unit_price), 0) AS total FROM products WHERE created_by = ?');
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $row    = $result->fetch_assoc();
+    $stmt->close();
     $conn->close();
     return (float) $row['total'];
 }
@@ -273,12 +301,21 @@ function getTotalInventoryValue(): float {
  *
  * @return int
  */
-function getLowStockCount(): int {
-    $conn   = getDBConnection();
-    $result = $conn->query(
-        'SELECT COUNT(*) AS total FROM products WHERE quantity <= reorder_level'
-    );
+function getLowStockCount(?int $userId = null): int {
+    $conn = getDBConnection();
+    if ($userId === null) {
+        $result = $conn->query('SELECT COUNT(*) AS total FROM products WHERE quantity <= reorder_level');
+        $row    = $result->fetch_assoc();
+        $conn->close();
+        return (int) $row['total'];
+    }
+
+    $stmt = $conn->prepare('SELECT COUNT(*) AS total FROM products WHERE quantity <= reorder_level AND created_by = ?');
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $row    = $result->fetch_assoc();
+    $stmt->close();
     $conn->close();
     return (int) $row['total'];
 }
@@ -288,10 +325,21 @@ function getLowStockCount(): int {
  *
  * @return int
  */
-function getOutOfStockCount(): int {
-    $conn   = getDBConnection();
-    $result = $conn->query('SELECT COUNT(*) AS total FROM products WHERE quantity = 0');
+function getOutOfStockCount(?int $userId = null): int {
+    $conn = getDBConnection();
+    if ($userId === null) {
+        $result = $conn->query('SELECT COUNT(*) AS total FROM products WHERE quantity = 0');
+        $row    = $result->fetch_assoc();
+        $conn->close();
+        return (int) $row['total'];
+    }
+
+    $stmt = $conn->prepare('SELECT COUNT(*) AS total FROM products WHERE quantity = 0 AND created_by = ?');
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $row    = $result->fetch_assoc();
+    $stmt->close();
     $conn->close();
     return (int) $row['total'];
 }
@@ -301,16 +349,33 @@ function getOutOfStockCount(): int {
  *
  * @return array
  */
-function getRecentProducts(): array {
-    $conn   = getDBConnection();
-    $result = $conn->query('
-        SELECT p.*, c.name AS category_name
-        FROM products p
-        LEFT JOIN categories c ON p.category_id = c.id
-        ORDER BY p.created_at DESC
-        LIMIT 5
-    ');
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
+function getRecentProducts(?int $userId = null): array {
+    $conn = getDBConnection();
+    if ($userId === null) {
+        $result = $conn->query(
+            'SELECT p.*, c.name AS category_name
+             FROM products p
+             LEFT JOIN categories c ON p.category_id = c.id
+             ORDER BY p.created_at DESC
+             LIMIT 5'
+        );
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+        $conn->close();
+        return $rows;
+    }
+
+    $stmt = $conn->prepare(
+        'SELECT p.*, c.name AS category_name
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.created_by = ?
+         ORDER BY p.created_at DESC
+         LIMIT 5'
+    );
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
     $conn->close();
     return $rows;
 }
@@ -320,17 +385,34 @@ function getRecentProducts(): array {
  *
  * @return array
  */
-function getLowStockProducts(): array {
-    $conn   = getDBConnection();
-    $result = $conn->query('
-        SELECT p.*, c.name AS category_name
-        FROM products p
-        LEFT JOIN categories c ON p.category_id = c.id
-        WHERE p.quantity <= p.reorder_level
-        ORDER BY p.quantity ASC
-        LIMIT 5
-    ');
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
+function getLowStockProducts(?int $userId = null): array {
+    $conn = getDBConnection();
+    if ($userId === null) {
+        $result = $conn->query(
+            'SELECT p.*, c.name AS category_name
+             FROM products p
+             LEFT JOIN categories c ON p.category_id = c.id
+             WHERE p.quantity <= p.reorder_level
+             ORDER BY p.quantity ASC
+             LIMIT 5'
+        );
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+        $conn->close();
+        return $rows;
+    }
+
+    $stmt = $conn->prepare(
+        'SELECT p.*, c.name AS category_name
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.quantity <= p.reorder_level AND p.created_by = ?
+         ORDER BY p.quantity ASC
+         LIMIT 5'
+    );
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
     $conn->close();
     return $rows;
 }
@@ -340,18 +422,37 @@ function getLowStockProducts(): array {
  *
  * @return array  Each row: {category_name, count}
  */
-function getProductsByCategory(): array {
-    $conn   = getDBConnection();
-    $result = $conn->query('
-        SELECT
+function getProductsByCategory(?int $userId = null): array {
+    $conn = getDBConnection();
+    if ($userId === null) {
+        $result = $conn->query(
+            'SELECT
+                COALESCE(c.name, "Uncategorized") AS category_name,
+                COUNT(p.id) AS count
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.id
+            GROUP BY c.id
+            ORDER BY count DESC'
+        );
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+        $conn->close();
+        return $rows;
+    }
+
+    $stmt = $conn->prepare(
+        'SELECT
             COALESCE(c.name, "Uncategorized") AS category_name,
             COUNT(p.id) AS count
-        FROM products p
-        LEFT JOIN categories c ON p.category_id = c.id
-        GROUP BY c.id
-        ORDER BY count DESC
-    ');
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.created_by = ?
+         GROUP BY c.id
+         ORDER BY count DESC'
+    );
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
     $conn->close();
     return $rows;
 }

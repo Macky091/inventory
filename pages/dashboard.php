@@ -9,15 +9,18 @@ require_once __DIR__ . '/../includes/user.php';
 
 requireLogin();
 
+// Determine whether to show account-scoped dashboard or global (admin)
+$userId = isAdmin() ? null : ($_SESSION['user_id'] ?? null);
+
 // ── Fetch dashboard data ────────────────────────────────────
-$totalProducts    = getTotalProducts();
-$totalValue       = getTotalInventoryValue();
-$lowStockCount    = getLowStockCount();
-$outOfStockCount  = getOutOfStockCount();
-$recentProducts   = getRecentProducts();
-$lowStockProducts = getLowStockProducts();
+$totalProducts    = getTotalProducts($userId);
+$totalValue       = getTotalInventoryValue($userId);
+$lowStockCount    = getLowStockCount($userId);
+$outOfStockCount  = getOutOfStockCount($userId);
+$recentProducts   = getRecentProducts($userId);
+$lowStockProducts = getLowStockProducts($userId);
 $totalUsers       = getTotalUsers();
-$categoryData     = getProductsByCategory();
+$categoryData     = getProductsByCategory($userId);
 
 // Prepare category chart data (JSON for inline JS)
 $chartLabels = json_encode(array_column($categoryData, 'category_name'));

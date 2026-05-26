@@ -8,7 +8,7 @@
  * @var string $activePage  Sidebar nav key, e.g. 'dashboard' | 'products'
  */
 
-$lowStockCount = getLowStockCount();
+$lowStockCount = getLowStockCount(isAdmin() ? null : ($_SESSION['user_id'] ?? null));
 $userInitials  = strtoupper(substr($_SESSION['user_full_name'] ?? 'U', 0, 2));
 ?>
 <!DOCTYPE html>

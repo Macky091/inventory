@@ -107,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $search     = trim($_GET['search']      ?? '');
 $categoryId = (int)($_GET['category_id'] ?? 0);
 
-$products   = getAllProducts($search, $categoryId);
+$userId     = isAdmin() ? null : ($_SESSION['user_id'] ?? null);
+$products   = getAllProducts($search, $categoryId, $userId);
 $categories = getAllCategories();
 
 $pageTitle  = 'Products';
