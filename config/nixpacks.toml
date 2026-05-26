@@ -5,8 +5,7 @@ nixPkgs = [
     "php83Extensions.pdo",
     "php83Extensions.pdo_mysql",
     "php83Extensions.mbstring",
-    "php83Extensions.curl",
-    "php83Extensions.session"
+    "php83Extensions.curl"
 ]
 
 [start]
