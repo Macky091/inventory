@@ -98,13 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>" />
 
         <div class="form-group">
-          <label for="username"><i class="fa-solid fa-user"></i> Username</label>
+          <label for="username"><i class="fa-solid fa-user"></i> Branch Name</label>
           <input
             type="text"
             id="username"
             name="username"
             class="form-control"
-            placeholder="Enter your username"
+            placeholder="Enter your branch name"
             value="<?= sanitize($_POST['username'] ?? '') ?>"
             autocomplete="username"
             required

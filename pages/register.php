@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                    value="<?= sanitize($old['Branch'] ?? '') ?>" required />
           </div>
           <div class="form-group">
-            <label><i class="fa-solid fa-envelope"></i> Email</label>
+            <label><i class="fa-solid fa-envelope"></i> BranchEmail</label>
             <input type="email" name="email" class="form-control"
                    placeholder="you@example.com"
                    value="<?= sanitize($old['email'] ?? '') ?>" required />
@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <hr class="divider" />
 
       <p style="text-align:center; font-size:.875rem; color:var(--text-secondary);">
-        Already have an account?
+        Already have a Branch account?
         <a href="<?= BASE_URL ?>/index.php?page=login">Sign in</a>
       </p>
 
