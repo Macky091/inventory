@@ -98,47 +98,6 @@ inventory_db
     └── created_at / updated_at
 ```
 
----
-
-## Setup Instructions
-
-### Prerequisites
-- PHP 8.0+
-- MySQL 8 or MariaDB 10+
-- Apache / Nginx (XAMPP, WAMP, or LAMP recommended)
-
-### Steps
-
-1. **Clone or copy** the project folder into your web server's document root.
-   - XAMPP: `C:\xampp\htdocs\inventory\`
-   - WAMP:  `C:\wamp64\www\inventory\`
-   - Linux: `/var/www/html/inventory/`
-
-2. **Import the database schema**
-   ```bash
-   mysql -u root -p < config/schema.sql
-   ```
-   Or paste the contents of `config/schema.sql` into phpMyAdmin's SQL tab.
-
-3. **Configure the database connection** (if needed) in `config/database.php`:
-   ```php
-   define('DB_HOST', 'localhost');
-   define('DB_USER', 'root');
-   define('DB_PASS', '');
-   define('DB_NAME', 'inventory_db');
-   ```
-
-4. **Open in browser**:
-   ```
-   http://localhost/inventory/
-   ```
-
-5. **Log in** with the seeded admin account:
-   - Username: `admin`
-   - Password: `Admin@1234`
-
----
-
 ## Project File Structure
 
 ```
@@ -165,18 +124,4 @@ inventory/
     └── js/
         └── main.js            ← UI interactions (modals, clock, search, counters)
 ```
-
----
-
-## Security Notes
-
-- All user inputs are validated server-side before any database operation.
-- Passwords are hashed with `PASSWORD_BCRYPT` (cost 12) — never stored plain.
-- All output is escaped via `htmlspecialchars()` (the `sanitize()` helper).
-- All SQL uses **prepared statements** with bound parameters — no raw interpolation.
-- Session IDs are regenerated on login to prevent session fixation.
-- CSRF tokens protect every state-changing form.
-
----
-
 *Developed as a course project — Web Development & Database Integration*
