@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="auth-card">
 
       <h2>Welcome back 👋</h2>
-      <p class="subtitle">Sign in to your Branch sczxcand continue.</p>
+      <p class="subtitle">Sign in to your Branch and continue.</p>
 
       <!-- Error alert -->
       <?php if (!empty($errors)): ?>
