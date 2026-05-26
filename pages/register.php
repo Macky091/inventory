@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="auth-form-area">
     <div class="auth-card">
 
-      <h2>Create Account</h2>
+      <h2>Create Branch Account</h2>
       <p class="subtitle">Fill in your details to get started.</p>
 
       <!-- Error alert -->
@@ -107,18 +107,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>" />
 
         <div class="form-group">
-          <label><i class="fa-solid fa-id-card"></i> Full Name</label>
+          <label><i class="fa-solid fa-id-card"></i> Branch Name</label>
           <input type="text" name="full_name" class="form-control"
-                 placeholder="Your full name"
+                 placeholder="Branch name"
                  value="<?= sanitize($old['full_name'] ?? '') ?>" required />
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label><i class="fa-solid fa-user"></i> Username</label>
+            <label><i class="fa-solid fa-user"></i> Branch</label>
             <input type="text" name="username" class="form-control"
-                   placeholder="e.g. john_doe"
-                   value="<?= sanitize($old['username'] ?? '') ?>" required />
+                   placeholder="Catalunan Grande"
+                   value="<?= sanitize($old['Branch'] ?? '') ?>" required />
           </div>
           <div class="form-group">
             <label><i class="fa-solid fa-envelope"></i> Email</label>
