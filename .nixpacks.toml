@@ -2,9 +2,7 @@
 nixPkgs = [
   "php84",
   "php84Extensions.mysqli",
-  "php84Extensions.pdo_mysql",
-  "php84Extensions.mbstring",
-  "php84Extensions.curl"
+  "php84Extensions.pdo_mysql"
 ]
 
 [start]
