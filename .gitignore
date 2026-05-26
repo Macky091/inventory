@@ -1,0 +1,37 @@
+# ── OS & Editor junk ──────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# ── Environment / Secrets ─────────────────────────────────────
+# If you ever add a .env file, never commit it
+.env
+.env.local
+.env.production
+
+# ── XAMPP / server logs ────────────────────────────────────────
+*.log
+error_log
+
+# ── PHP Composer (not used here, but just in case) ────────────
+vendor/
+composer.lock
+
+# ── Node (not used here, but just in case) ────────────────────
+node_modules/
+package-lock.json
+
+# ── Database exports / backups ─────────────────────────────────
+*.sql.bak
+*.dump
+
+# NOTE: config/database.php IS committed because it only uses
+# constants — no real credentials are hardcoded for production.
+# If you deploy to a live server, override DB_* constants via
+# environment variables or a separate config file listed above.

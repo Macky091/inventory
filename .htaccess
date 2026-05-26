@@ -1,0 +1,15 @@
+# InvenTrack — Apache Configuration
+
+Options -Indexes
+
+# Protect sensitive config files
+<FilesMatch "^(database\.php|schema\.sql|\.env)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(includes|config)/.*\.php$ index.php [F,L]
+</IfModule>
+
+AddDefaultCharset UTF-8
