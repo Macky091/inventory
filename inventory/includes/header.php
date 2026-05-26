@@ -65,7 +65,7 @@ $userInitials  = strtoupper(substr($_SESSION['user_full_name'] ?? 'U', 0, 2));
       <a href="<?= BASE_URL ?>/index.php?page=users"
          class="nav-item <?= ($activePage === 'users') ? 'active' : '' ?>">
         <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
-        Users
+        Branches
       </a>
       <?php endif; ?>
 

@@ -25,15 +25,15 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="panel-header">
       <div class="panel-title">
         <i class="fa-solid fa-users" style="color:var(--info);"></i>
-        Registered Users
+        Registered Branches
       </div>
-      <span class="badge badge-default"><?= count($users) ?> user(s)</span>
+      <span class="badge badge-default"><?= count($users) ?> branch(es)</span>
     </div>
 
     <?php if (empty($users)): ?>
       <div class="empty-state">
         <div class="empty-icon">👥</div>
-        <h4>No users found</h4>
+        <h4>No branches found</h4>
       </div>
     <?php else: ?>
       <div class="table-wrapper">
