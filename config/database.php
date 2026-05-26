@@ -4,7 +4,7 @@
  * Reads credentials from Railway environment variables.
  */
 
-define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost');
+define('DB_HOST', getenv('MYSQLHOST')     ?: 'mysql.railway.internal');
 define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
 define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'AmAVIGyPIvtAgYNISmJZGYAynrhTngaL');
