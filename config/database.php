@@ -3,11 +3,6 @@
  * Database Configuration
  * Reads credentials from Railway environment variables.
  */
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-?>
 
 define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost');
 define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
