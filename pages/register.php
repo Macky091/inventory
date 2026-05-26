@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register — InvenTrack</title>
+  <title>Register — Brancher</title>
   <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -74,13 +74,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="auth-brand">
     <div class="brand-logo">
       <div class="logo-icon">📦</div>
-      <span class="logo-text">InvenTrack</span>
+      <span class="logo-text">Brancher</span>
     </div>
     <div class="brand-tagline">
-      Join <span>InvenTrack</span><br>Today.
+      Join <span>Brancher</span><br>Today.
     </div>
     <p class="brand-sub">
-      Create an account and start managing your inventory with precision.
+      Create a Branch account and start managing your inventory with precision.
     </p>
   </div>
 
